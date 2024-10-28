@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+
+<html>
+    <head>
+        <title>Votium</title>
+    </head>
+    <body>
+        <img src="res/qr.png">
+
+        <form action="/submit" method="POST">
+            <label>Example
+                <input name="name" class="antworten" type="text" id="ID_OF_INPUT" placeholder="Hallo bitte eingeben" required>
+            </label>
+            <br>
+            <label>
+                Label
+                <input name="b" class="antworten" type="text" placeholder="Hallo bitte eingeben">
+            </label>
+            <br>
+            <button type="submit"  onclick="send()">absenden</button>
+        </form>
+    </body>
+<style>
+    body {
+        background-color:  #E1E8F0;
+        font-family: Arial, sans-serif;
+    }
+
+    img {
+        padding-left: 50%;
+    }
+    input {
+        color: red;
+        border: 1px solid red;
+        width: 5%;
+    }
+    label {
+        padding: 10px;
+    }
+</style>
+
+<script>
+    function send() {
+        let answers = document.getElementsByClassName("antworten");
+        for (let i = 0; i < answers.length; i++) {
+            console.log("Input: " + answers[i].value);
+        }
+    }
+</script>
+</html>
