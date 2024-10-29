@@ -11,18 +11,22 @@
 
         <form action="/" method="POST">
             <label>Example
-                <input name="my_custom_first_name" class="antworten" type="text" id="ID_OF_INPUT" placeholder="Hallo bitte eingeben" required>
+                <input name="1" class="answers" type="number" required>
             </label>
             <br>
             <label>
                 Label
-                <input name="55" class="antworten" type="text" placeholder="Hallo bitte eingeben">
+                <input name="2" class="answers" type="text" placeholder="antwort hier">
             </label>
             <br>
             <button id="submit" type="submit"  onclick="send()">Absenden<u style="padding-left: 30px"></u></button>
         </form>
 
+        <p id="antworten"></p>
+
         <img src="res/qr2.svg">
+
+
 
     </body>
 <style>
@@ -89,15 +93,13 @@
         flex-direction: column;
     }
 
-    .antworten {
-        padding: 5px;
-        width: 10%;
-        border-radius: 5px;
+    .answers {
+        width: 50%;
         border: 1px solid black;
     }
     /* style the label to always have the same space between text and input */
     label {
-        width: 50%;
+        width: 100%;
         display: flex;
         justify-content: space-between;
     }
@@ -105,10 +107,16 @@
 
 <script>
     function send() {
-        let answers = document.getElementsByClassName("antworten");
-        for (let i = 0; i < answers.length; i++) {
-            console.log("Input: " + answers[i].value);
-        }
+        let msg = document.getElementById("antworten");
+        fetch("/msgs", {
+            method: "GET",
+        }).then(response => response.text())
+            .then(data => {
+                // interpret the data / from url encoded and put one answer per line of the msg element
+                msg.innerText = data.replace(/&/g, "\n");
+
+            });
+
     }
 </script>
 </html>

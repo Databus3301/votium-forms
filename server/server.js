@@ -8,10 +8,16 @@ const indexPath = path.join(__dirname, 'index.html');
 // Define the port (443 is the default for HTTPS)
 const PORT = 8080;
 
+let msg = [];
 // Create the server
 const server = http.createServer({}, (req, res) => {
     // Handle GET requests
     if(req.method === 'GET') {
+        // TODO: remove this tmp code to display msgs across devices
+        if (req.url === '/msgs') {
+            res.writeHead(200, {'Content-Type': 'application/json'});
+            return res.end(JSON.stringify(msg));
+        } else
         // Serve the index.html file when the root is requested
         if (req.url === '/')
             return sendFile(res, indexPath);
@@ -30,6 +36,11 @@ const server = http.createServer({}, (req, res) => {
         });
         // End of data
         req.on('end', () => {
+            // Parse the data
+            body = decodeURIComponent(body);
+            body.replaceAll("=", " = ").split('&').forEach((element) => {
+                msg.push(element);
+            })
             console.log('Received POST data:\n' + body.replaceAll("=", " = ").split('&').join('\n'));
         });
 
