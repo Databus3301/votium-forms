@@ -2,26 +2,27 @@
 
 <html>
     <head>
+        <meta charset="UTF-8">
         <title>Votium</title>
     </head>
     <body>
 
         <h1 id="title">VOTIUM</h1>
 
-        <form action="/submit" method="POST">
+        <form action="/" method="POST">
             <label>Example
-                <input name="1" class="antworten" type="text" id="ID_OF_INPUT" placeholder="Hallo bitte eingeben" required>
+                <input name="my_custom_first_name" class="antworten" type="text" id="ID_OF_INPUT" placeholder="Hallo bitte eingeben" required>
             </label>
             <br>
             <label>
                 Label
-                <input name="2" class="antworten" type="text" placeholder="Hallo bitte eingeben">
+                <input name="55" class="antworten" type="text" placeholder="Hallo bitte eingeben">
             </label>
             <br>
             <button id="submit" type="submit"  onclick="send()">Absenden<u style="padding-left: 30px"></u></button>
         </form>
 
-        <img src="res/qr.png">
+        <img src="res/qr2.svg">
 
     </body>
 <style>
@@ -35,6 +36,7 @@
         width: 20%;
         height: 20%
     }
+
     input {
         width: 5%;
     }
