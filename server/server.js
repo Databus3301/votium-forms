@@ -38,6 +38,8 @@ const server = http.createServer({}, (req, res) => {
         req.on('end', () => {
             // Parse the data
             body = decodeURIComponent(body);
+            body = body.replaceAll('+', ' ');
+
             body.replaceAll("=", " = ").split('&').forEach((element) => {
                 msg.push(element);
             })
