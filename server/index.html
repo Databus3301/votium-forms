@@ -1,35 +1,29 @@
 <!DOCTYPE HTML>
 
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Votium</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <title>Votium</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-        <h1 id="title">VOTIUM</h1>
+<h1 id="title">VOTIUM</h1>
 
-        <form action="/" method="POST">
-            <label>Example
-                <input name="1" class="answers" type="number">
-            </label>
-            <br>
-            <label>
-                Label
-                <input name="2" class="answers" type="text" placeholder="antwort hier" required>
-            </label>
-            <br>
-            <button id="submit" type="submit"  onclick="send()">Absenden<u style="padding-left: 30px"></u></button>
-        </form>
+<form action="/" method="POST">
+    <label>Umfragen-Code:
+        <input name="1" class="answers" type="text" required>
+    </label>
+    <button id="submit" type="submit" onclick="window.location.assign('./answer.html')">Teilnehmen<u style="padding-left: 30px"></u></button>
+</form>
 
-        <p id="antworten"></p>
+<p id="antworten"></p>
 
-        <img src="res/qr2.svg">
+<img src="res/qr2.svg">
 
 
-    </body>
+</body>
 
-    <script src="Umfrage.js"></script>
-    <script src="site.js"></script>
+<script src="Umfrage.js"></script>
+<script src="site.js"></script>
 </html>
