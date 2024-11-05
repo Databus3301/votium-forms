@@ -65,7 +65,7 @@ form {
     width: 50%;
     border: 1px solid black;
 }
-/* style the label to always have the same space between text and input */
+
 label {
     width: 100%;
     display: flex;

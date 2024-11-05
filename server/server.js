@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Define the path for the index.html file
-const indexPath = path.join(__dirname, 'index.html');
+const indexPath = path.join(__dirname, './html/index.html');
 
 // Define the port (443 is the default for HTTPS)
 const PORT = 8080;
