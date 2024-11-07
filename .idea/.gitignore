@@ -1,0 +1,18 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+# ssl directory used to store trusted SSL certificates
+/ssl/
+# idea project files
+/.idea/
+
+/jsLibraryMappings.xml
+/misc.xml
+/modules.xml
+/umfragen.iml
+/vcs.xml
