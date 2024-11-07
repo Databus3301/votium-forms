@@ -23,14 +23,7 @@ const server = http.createServer({}, (req, res) => {
             res.writeHead(200, {'Content-Type': 'application/json'});
             return res.end(JSON.stringify(msg));
         } else
-        // Serve the index.html file when the root is requested
-        if (req.url === '/')
-            return sendFile(res, indexPath);
-        else if (fs.existsSync(`.${req.url}`))
-            return sendFile(res, `.${req.url}`);
-
-        res.writeHead(404, {'Content-Type': 'text/plain'});
-        res.end('404 Not Found');
+        servePage(res, req);
     } else
     // Handle POST requests
     if (req.method === 'POST') {
@@ -51,7 +44,8 @@ const server = http.createServer({}, (req, res) => {
             console.log('Received POST data:\n' + body.replaceAll("=", " = ").split('&').join('\n'));
         });
 
-        return sendFile(res, indexPath);
+
+        servePage(res, req);
     }
 });
 
@@ -99,7 +93,6 @@ function setContentType(req, res) {
     }
     res.writeHead(200, { 'Content-Type': contentType });
 }
-
 function sendFile(res, filePath) {
     if (fs.existsSync(filePath)) {
         fs.readFile(filePath, (err, data) => {
@@ -111,4 +104,13 @@ function sendFile(res, filePath) {
             return res.end(data);
         })
     }
+}
+function servePage(res, req) {
+    if (req.url === '/')
+        return sendFile(res, indexPath);
+    else if (fs.existsSync(`.${req.url}`))
+        return sendFile(res, `.${req.url}`);
+
+    res.writeHead(404, {'Content-Type': 'text/plain'});
+    res.end('404 Not Found');
 }

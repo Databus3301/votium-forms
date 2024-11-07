@@ -16,6 +16,7 @@ input {
 #title {
     font: 700 2.5em Arial;
     text-align: center;
+    padding-left: 10px;
 }
 
 #submit {
@@ -31,11 +32,8 @@ input {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    /* Add some padding for better appearance */
     padding: 10px 0;
-    /* Rounded corners for a modern look */
     border-radius: 5px;
-    /* Remove default button border */
     border: none;
     /* Add a subtle hover effect */
     transition: background-color 0.3s ease;
@@ -55,6 +53,7 @@ form {
     /* center the form */
     width: 50%;
     margin-left: 25%;
+    padding-left: 10px;
 
     /* center the fields */
     display: flex;
