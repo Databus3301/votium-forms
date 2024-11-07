@@ -1,6 +1,6 @@
 // modulate a Umfragen object
 
-class Umfrage {
+class Form {
     constructor(id, frage, antworten) {
         this.id = id;
         this.frage = frage;
@@ -9,15 +9,16 @@ class Umfrage {
 }
 
 
-class Frage {
-    constructor(fragenText, typ, antworten) {
-        this.frage = fragenStr;
+class Question {
+    constructor(text, type, answers) {
+        this.question = text;
+        this.type = type;
     }
 }
 
-class Antworten {
-    constructor(typ, text) {
-        this.typ = typ;
+class Answer {
+    constructor(type, text) {
+        this.type = type;
         this.text = text;
     }
 }
