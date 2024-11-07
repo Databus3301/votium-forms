@@ -13,6 +13,11 @@ let msg = [];
 const server = http.createServer({}, (req, res) => {
     // Handle GET requests
     if(req.method === 'GET') {
+        if(req.url.includes('?'))
+            req.searchParams = req.url.split('?')[1].split('&');
+        req.url = req.url.split('?')[0];
+
+
         // TODO: remove this tmp code to display msgs across devices
         if (req.url === '/msgs') {
             res.writeHead(200, {'Content-Type': 'application/json'});

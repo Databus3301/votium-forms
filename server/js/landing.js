@@ -1,5 +1,5 @@
 
-
+/*
 document.getElementById('landingForm').addEventListener('submit',
 function(event) {
             event.preventDefault();
@@ -14,8 +14,7 @@ function(event) {
             console.log("redirected")
         }
 );
+*/
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log("DOM loaded");
-});
+
 
