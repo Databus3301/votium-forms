@@ -5,7 +5,7 @@ const path = require('path');
 // Define the path for the index.html file
 const indexPath = path.join(__dirname, './html/index.html');
 
-// Define the port (443 is the default for HTTPS)
+// Define the server port
 const PORT = 8080;
 
 // Create the server
@@ -26,15 +26,13 @@ const server = http.createServer({}, (req, res) => {
         }); // Parse the data when the request ends
         req.on('end', () => {
             reqBody = decodeURIComponent(reqBody);
-            logPOST(reqBody);
+            // Handle the POST data if the request is not for a File
+            if(!path.extname(req.url).startsWith('.'))
+                handlePostData(req, res, reqBody);
         });
-
-        // Send a response
-        // Serve the page if the request is for a file
+        // Serve the page if the request is for a File
         if(path.extname(req.url).startsWith('.'))
             servePage(res, req);
-        else
-            handlePostData(req, res, reqBody);
     }
 });
 
@@ -111,5 +109,8 @@ function handlePostData(req, res, data) {
 }
 
 function logPOST(reqBody)  {
-    console.log(`Received POST data: ${"-".repeat(80-"Received POST data: ".length)}\n` + reqBody.split('&').join('\n'));
+    let date = new Date();
+    let time = date.toLocaleTimeString();
+    let heading = `[Received POST data at ${time}]:`;
+    console.log(`${heading} ${"-".repeat(80-heading.length)}\n` + reqBody.split('&').join('\n'));
 }
