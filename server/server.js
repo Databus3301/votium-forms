@@ -11,6 +11,7 @@ const PORT = 8080;
 // Create the server
 const server = http.createServer({}, (req, res) => {
     // Handle GET requests
+    console.log(req.url);
     if(req.method === 'GET') {
         if(req.url.includes('?'))
             req.searchParams = req.url.split('?')[1].split('&');

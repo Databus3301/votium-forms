@@ -23,7 +23,7 @@
 </head>
 <body>
 
-<h1 id="title">VOTIUM</h1>
+<h1 id="title" onclick="redirect()">VOTIUM</h1>
 
 <form method="GET" action="https://votium.social/html/answer.html" id="landingForm">
     <label>Umfragen-Code:
@@ -40,5 +40,16 @@
 </body>
 
 <script src="../js/landing.js"></script>
+
+<!--! Exclusive title page Form-Creation-Link prettify: -->
+<style>
+    #title {
+        cursor: pointer;
+        transition: color 0.5s ease;
+    }
+    #title:hover {
+        color: #41454d;
+    }
+</style>
 
 </html>
