@@ -9,3 +9,4 @@
 # ssl directory used to store trusted SSL certificates
 /ssl/
 
+/umfragen/
