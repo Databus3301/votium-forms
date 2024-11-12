@@ -8,7 +8,6 @@ const indexPath = path.join(__dirname, './html/index.html');
 // Define the port (443 is the default for HTTPS)
 const PORT = 8080;
 
-let msg = [];
 // Create the server
 const server = http.createServer({}, (req, res) => {
     // Handle GET requests
@@ -16,36 +15,27 @@ const server = http.createServer({}, (req, res) => {
         if(req.url.includes('?'))
             req.searchParams = req.url.split('?')[1].split('&');
         req.url = req.url.split('?')[0];
-
-
-        // TODO: remove this tmp code to display msgs across devices
-        if (req.url === '/msgs') {
-            res.writeHead(200, {'Content-Type': 'application/json'});
-            return res.end(JSON.stringify(msg));
-        } else
         servePage(res, req);
     } else
     // Handle POST requests
     if (req.method === 'POST') {
         // Collect data chunks
-        let body = '';
+        let reqBody = '';
         req.on('data', chunk => {
-            body += chunk.toString();
-        });
-        // End of data
+            reqBody += chunk.toString();
+        }); // Parse the data when the request ends
         req.on('end', () => {
-            // Parse the data
-            body = decodeURIComponent(body);
-            body = body.replaceAll('+', ' ');
-
-            body.replaceAll("=", " = ").split('&').forEach((element) => {
-                msg.push(element);
-            })
-            console.log('Received POST data:\n' + body.replaceAll("=", " = ").split('&').join('\n'));
+            reqBody = decodeURIComponent(reqBody);
+            console.log('Received POST data:\n' + reqBody.split('&').join('\n'));
         });
 
+        // Send a response
+        // Serve the page if the request is for a file
+        if(path.extname(req.url).startsWith('.'))
+            servePage(res, req);
+        else
+            handlePostData(req, res, reqBody);
 
-        servePage(res, req);
     }
 });
 
@@ -113,4 +103,10 @@ function servePage(res, req) {
 
     res.writeHead(404, {'Content-Type': 'text/plain'});
     res.end('404 Not Found');
+}
+
+function handlePostData(req, res, data) {
+    console.log('Received POST data:\n' + data.split('&').join('\n'));
+    res.writeHead(200, {'Content-Type': 'text/plain'});
+    res.end('POST received');
 }

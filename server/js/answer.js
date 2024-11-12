@@ -2,21 +2,31 @@
 document.addEventListener('DOMContentLoaded', async function () {
     const params = new URLSearchParams(window.location.search);
     const code = params.get('code');
-    if (code) {
-        console.log("Code: " + code);
-        let hash = await hashString(code);
-        console.log("Sha256: " + hash);
 
-        let form = await fetch('/answer', {
-            method: 'POST',
-            body: JSON.stringify(hash)
-        })
-
-    } else {
+    if (!code) {
         alert("Bitte gib einen Code ein!")
         window.location.href = "/";
     }
-    // or load here from URI params and in a answer,js script
+
+    console.log("Code: " + code);
+    let hash = await hashString(code);
+    console.log("Sha256: " + hash);
+
+    // Query for a form corresponding to the hash
+    fetch('https://votium.social/form', {
+        method: 'POST',
+        body: JSON.stringify({hash: hash})
+    })
+    // Parse the response as text
+    .then(response => response.text())
+    // Handle the parsed response
+    .then(data => {
+       console.log(data);
+    })
+    // Handle errors
+    .catch((error) => {
+        console.error('Error:', error);
+    });
 });
 
 
