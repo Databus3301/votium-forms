@@ -10,8 +10,18 @@
 
 <h1 id="title">VOTIUM</h1>
 <form method="GET" action="/">
-    <button id="submit">Umfrage Erstellen</button>
+    <label>Titel:
+        <input name="title" class="answers" type="text" required>
+    </label>
+    <label>
+        <button id="add-question" type="button" onclick="addQuestion()">+</button>
+    </label>
+    <button id="submit" type="submit">Umfrage Erstellen</button>
 </form>
 
 </body>
+
+<script src="../js/form.js"></script>
+<script src="../js/create.js"></script>
+
 </html>

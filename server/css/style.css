@@ -67,8 +67,29 @@ form {
     border: 1px solid black;
 }
 
+.form-modifier {
+    display: inline-block;
+    width: 12.5%;
+    margin-top: 10px;
+    margin-left: 25%;
+    border: 1px solid black;
+}
+#add-question {
+    width: 25%;
+    margin-top: 10px;
+    margin-left: 37.5%;
+    border: 1px solid black;
+}
+
 label {
     width: 100%;
     display: flex;
     justify-content: space-between;
+}
+
+.question-umbrella {
+    border: 1px solid black;
+    border-radius: 10px;
+    margin: 10px 0;
+    padding: 0 10px;
 }

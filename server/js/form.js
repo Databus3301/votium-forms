@@ -1,24 +1,22 @@
-// modulate a Umfragen object
 
 class Form {
-    constructor(id, frage, antworten) {
+    constructor(id, questions) {
         this.id = id;
-        this.frage = frage;
-        this.antworten = antworten;
+        this.questions = questions;
     }
 }
 
 
 class Question {
     constructor(text, type, answers) {
-        this.question = text;
-        this.type = type;
+        this.question = text;       // the question text
+        this.type = type;           // multiple choice, textual, numeric, checkbox
+        this.answers = answers;
     }
 }
 
 class Answer {
-    constructor(type, text) {
-        this.type = type;
+    constructor(text) {
         this.text = text;
     }
 }
