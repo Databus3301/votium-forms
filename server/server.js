@@ -106,7 +106,7 @@ function servePage(res, req) {
 }
 
 function handlePostData(req, res, data) {
-    logPOST(data); // Log the POST data
+    logPOST(data);
     // Handle the POST data according to the request URL
     // If the request is for a form, return the form data
     if(req.url === '/form') {

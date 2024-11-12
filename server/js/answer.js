@@ -21,8 +21,11 @@ document.addEventListener('DOMContentLoaded', async function () {
     .then(response => response.json())
     // Handle the parsed response
     .then(data => {
-        // TODO: Populate the page according to the form data received here
-       console.log(data);
+        if(data.status !== "success") {
+            alert("Formular nicht gefunden!\n\n Error: " + data.status);
+            window.location.href = "/";
+        }
+        // TODO: Display the form
     })
     // Handle errors
     .catch((error) => {
