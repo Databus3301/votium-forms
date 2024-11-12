@@ -124,6 +124,8 @@ function handlePostData(req, res, data) {
     // default case
     res.writeHead(200, {'Content-Type': 'text/json'});
     res.end('{"status": "?_?"}');
+
+    //TODO: Handle the POST data to "/create" and save the form data
 }
 
 function logPOST(reqBody)  {

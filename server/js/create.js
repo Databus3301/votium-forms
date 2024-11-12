@@ -4,7 +4,7 @@ let insertionPoint;
 // Prefabs
 let answerPrefab = `
     <label>Antwort
-        <input type="text" name="answer" class="answers" required>
+        <input type="text" name="answer" class="answers">
     </label>
 `;
 let questionPrefab = `
