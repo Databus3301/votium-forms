@@ -90,6 +90,9 @@ function sendFile(res, filePath) {
             setContentType({url: filePath}, res);
             return res.end(data);
         })
+    } else {
+        res.writeHead(404, {'Content-Type': 'text/plain'});
+        res.end('404 Not Found');
     }
 }
 function servePage(res, req) {
@@ -103,9 +106,24 @@ function servePage(res, req) {
 }
 
 function handlePostData(req, res, data) {
-    logPOST(data);
+    logPOST(data); // Log the POST data
+    // Handle the POST data according to the request URL
+    // If the request is for a form, return the form data
+    if(req.url === '/form') {
+        data = JSON.parse(data);
+        // Test if the POST data is in the correct format
+        if(data.hash === undefined)
+            return res.end('{"status": "bad_request_format"}');
+        // Test if the form exists
+        let path = `../umfragen/${data.hash}.json`;
+        if(fs.existsSync(path))
+            return sendFile(res, path);
+        else
+            return res.end('{"status": "not_found"}');
+    }
+    // default case
     res.writeHead(200, {'Content-Type': 'text/json'});
-    res.end('{"status": "success"}');
+    res.end('{"status": "?_?"}');
 }
 
 function logPOST(reqBody)  {
