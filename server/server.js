@@ -26,7 +26,7 @@ const server = http.createServer({}, (req, res) => {
         }); // Parse the data when the request ends
         req.on('end', () => {
             reqBody = decodeURIComponent(reqBody);
-            console.log('Received POST data:\n' + reqBody.split('&').join('\n'));
+            logPOST(reqBody);
         });
 
         // Send a response
@@ -35,7 +35,6 @@ const server = http.createServer({}, (req, res) => {
             servePage(res, req);
         else
             handlePostData(req, res, reqBody);
-
     }
 });
 
@@ -106,7 +105,11 @@ function servePage(res, req) {
 }
 
 function handlePostData(req, res, data) {
-    console.log('Received POST data:\n' + data.split('&').join('\n'));
-    res.writeHead(200, {'Content-Type': 'text/plain'});
-    res.end('POST received');
+    logPOST(data);
+    res.writeHead(200, {'Content-Type': 'text/json'});
+    res.end('{"status": "success"}');
+}
+
+function logPOST(reqBody)  {
+    console.log(`Received POST data: ${"-".repeat(80-"Received POST data: ".length)}\n` + reqBody.split('&').join('\n'));
 }

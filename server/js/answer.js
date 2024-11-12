@@ -17,16 +17,20 @@ document.addEventListener('DOMContentLoaded', async function () {
         method: 'POST',
         body: JSON.stringify({hash: hash})
     })
-    // Parse the response as text
-    .then(response => response.text())
+    // Parse the response as json
+    .then(response => response.json())
     // Handle the parsed response
     .then(data => {
+        // TODO: Populate the page according to the form data received here
        console.log(data);
     })
     // Handle errors
     .catch((error) => {
         console.error('Error:', error);
     });
+
+
+
 });
 
 
