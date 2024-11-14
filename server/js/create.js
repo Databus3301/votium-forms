@@ -4,7 +4,7 @@ let insertionPoint;
 // Prefabs
 let answerPrefab = `
     <label>Antwort
-        <input type="text" name="answer" class="answers">
+        <input type="text" name="answer-text" class="answers">
     </label>
 `;
 let questionPrefab = `
@@ -17,7 +17,7 @@ let questionPrefab = `
         </p>
         <p>
             <label>Fragentyp
-                <select name="answer" required onchange="adjustAnswers(this)">
+                <select name="answer-type" required onchange="adjustAnswers(this)">
                     <option value="text">Textual</option>
                     <option value="multiple-choice">Multiple choice</option>
                     <option value="num">Numeric</option>

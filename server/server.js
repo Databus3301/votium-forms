@@ -1,6 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 // Define the path for the index.html file
 const indexPath = path.join(__dirname, './html/index.html');
@@ -109,7 +110,7 @@ function handlePostData(req, res, data) {
     logPOST(data);
     // Handle the POST data according to the request URL
     // If the request is for a form, return the form data
-    if(req.url === '/form') {
+    if(req.url === '/get-form') {
         data = JSON.parse(data);
         // Test if the POST data is in the correct format
         if(data.hash === undefined)
@@ -120,12 +121,26 @@ function handlePostData(req, res, data) {
             return sendFile(res, path);
         else
             return res.end('{"status": "not_found"}');
+    } else
+    if (req.url === '/create-form') {
+        let params = new URLSearchParams(data);
+        if(!params.has("title"))
+            return res.end('{"status": "bad_request_format"}');
+        let hash = sha256Hash(params.get("title"));
+        let path = `../umfragen/${hash}.json`;
+        let file = fs.createWriteStream(path);
+        file.write(data);
+        file.end();
+
+        //for(const [key, value] of params) {
+        //    console.log(`${key}: ${value}`);
+        //}
     }
     // default case
     res.writeHead(200, {'Content-Type': 'text/json'});
     res.end('{"status": "?_?"}');
 
-    //TODO: Handle the POST data to "/create" and save the form data
+    //TODO: Handle the POST data to "/create-form" and save the form data
 }
 
 function logPOST(reqBody)  {
@@ -133,4 +148,8 @@ function logPOST(reqBody)  {
     let time = date.toLocaleTimeString();
     let heading = `[Received POST data at ${time}]:`;
     console.log(`${heading} ${"-".repeat(80-heading.length)}\n` + reqBody.split('&').join('\n'));
+}
+
+function sha256Hash(data) {
+    return crypto.createHash('sha256').update(data).digest('hex');
 }

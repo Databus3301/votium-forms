@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     console.log("Sha256: " + hash);
 
     // Query for a form corresponding to the hash
-    fetch('https://votium.social/form', {
+    fetch('https://votium.social/get-form', {
         method: 'POST',
         body: JSON.stringify({hash: hash})
     })
@@ -49,3 +49,4 @@ async function hashString(input) {
     const hashArray = Array.from(new Uint8Array(hashBuffer));
     return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
 }
+
