@@ -123,18 +123,62 @@ function handlePostData(req, res, data) {
             return res.end('{"status": "not_found"}');
     } else
     if (req.url === '/create-form') {
+        // TODO: overwrite checks and user feedback if they wish to overwrite duplicate form
+
         let params = new URLSearchParams(data);
         if(!params.has("title"))
             return res.end('{"status": "bad_request_format"}');
         let hash = sha256Hash(params.get("title"));
         let path = `../umfragen/${hash}.json`;
         let file = fs.createWriteStream(path);
-        file.write(data);
+
+        file.write("{\n");
+        file.write(`"status": "success",\n`);
+        file.write(`"title": "${params.get("title")}",\n`);
+        file.write(`"id": "${hash}",\n`);
+        file.write(`"questions": [\n`);
+
+        let writing = {question: false, answers: false};
+        let wrote = {type: false, answers: false}
+        for(const [key, value] of params) {
+            if(key === "question") {
+                if(writing.question) {
+                    if(!(wrote.answers && wrote.type))
+                        return error("bad_request_format\nincomplete_question");
+                    writing.answers = wrote.answers = wrote.type = false;
+                    file.write("]\n},\n");
+                }
+                file.write("{\n");
+                file.write(`"text": "${value}",\n`);
+                writing.question = true;
+            }
+            if (key ===  "question-type") {
+                if (!writing.question)
+                    return error("bad_request_format\nno_question_provided");
+                file.write(`"type": "${value}",\n`);
+                wrote.type = true;
+            }
+            if (key === "answer-text") {
+                if (!(wrote.type && writing.question))
+                    return error("bad_request_format\nno_question/(-type)_provided");
+                if (!writing.answers) {
+                    file.write(`"answers": [\n`);
+                    file.write(`"${value}"\n`);
+                    wrote.answers = writing.answers = true;
+                } else {
+                    file.write(`,"${value}"\n`);
+                }
+            }
+        }
+        file.write("]\n}\n]\n}\n");
         file.end();
 
-        //for(const [key, value] of params) {
-        //    console.log(`${key}: ${value}`);
-        //}
+        function error(msg) {
+            file.write("]\n}\n]\n}\n");
+            file.end();
+            res.writeHead(500, {'Content-Type': 'text/json'});
+            res.end(`{"status": "${msg}"}`);
+        }
     }
     // default case
     res.writeHead(200, {'Content-Type': 'text/json'});

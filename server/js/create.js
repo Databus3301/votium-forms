@@ -17,7 +17,7 @@ let questionPrefab = `
         </p>
         <p>
             <label>Fragentyp
-                <select name="answer-type" required onchange="adjustAnswers(this)">
+                <select name="question-type" required onchange="adjustAnswers(this)">
                     <option value="text">Textual</option>
                     <option value="multiple-choice">Multiple choice</option>
                     <option value="num">Numeric</option>
