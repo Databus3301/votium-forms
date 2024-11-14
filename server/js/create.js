@@ -41,12 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function addQuestion() {
-    // use <questionPrefab> to create a new question
-    let parser = new DOMParser();
-    // Parse the HTML string into a document
-    let doc = parser.parseFromString(questionPrefab, 'text/html');
-    // Get the question element from the parsed HTML
-    let question = doc.body.firstElementChild;
+    let question = Utilities.parseStringToHTML(questionPrefab)
     // insert the question
     insertionPoint.parentNode.insertBefore(question, insertionPoint.nextSibling);
     // update insertion point to the added question
@@ -54,12 +49,7 @@ function addQuestion() {
 }
 
 function addAnswer(at) {
-    // use <answerPrefab> to create a new answer
-    let parser = new DOMParser();
-    // Parse the HTML string into a document
-    let doc = parser.parseFromString(answerPrefab, 'text/html');
-    // Get the answer element from the parsed HTML
-    let answer = doc.body.firstElementChild;
+    let answer = Utilities.parseStringToHTML(answerPrefab);
     // insert the answer
     at.parentNode.insertBefore(answer, at);
 }
@@ -78,6 +68,7 @@ function adjustAnswers(of) {
     while(answers.length > 1) {
         answers[1].parentNode.remove();
     }
+    answers[0].parentNode.style.display = 'flex';
     // add an answer if the type is multiple-choice
     if(of.value === 'multiple-choice') {
         addAnswer(answersParagraph.getElementsByTagName('button')[0]);
@@ -90,5 +81,10 @@ function adjustAnswers(of) {
         // toggle add / remove buttons
         answersParagraph.getElementsByTagName('button')[0].style.display = 'none';
         answersParagraph.getElementsByTagName('button')[1].style.display = 'none';
+        // toggle checkbox input
+        if(of.value === 'checkbox') {
+            answers[0].parentNode.style.display = 'none';
+        }
     }
 }
+

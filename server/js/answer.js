@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     console.log("Code: " + code);
-    let hash = await hashString(code);
+    let hash = await Utilities.hashString(code);
     console.log("Sha256: " + hash);
 
     // Query for a form corresponding to the hash
@@ -27,8 +27,22 @@ document.addEventListener('DOMContentLoaded', async function () {
         }
         console.log(data);
         // TODO: Display the form
-        // code all the form types once in the answer.html file
-        // then template them according to <data>
+        // by templating <formTemplate> according to <data>
+        let form = document.getElementsByTagName("form")[0];
+        let titleE = Utilities.parseStringToHTML(formTemplate.title.replace("UMFRAGENTITEL", data.title));
+        form.insertBefore(titleE, form.firstChild);
+        data.questions.forEach(question => {
+            let questionE = Utilities.parseStringToHTML(formTemplate[question.type].replace("QUESTION-TEXT", question.text));
+            if(question.type === "multiple-choice") {
+                question.answers.forEach(answer => {
+                    let answerE = Utilities.parseStringToHTML(formTemplate["mc-answer"].replace("ANSWER-TEXT", answer));
+                    questionE.insertBefore(answerE, questionE.lastChild);
+
+                });
+            }
+            form.insertBefore(questionE, form.lastChild.previousElementSibling);
+        });
+
     })
     // Handle errors
     .catch((error) => {
@@ -40,41 +54,28 @@ document.addEventListener('DOMContentLoaded', async function () {
 });
 
 
-async function hashString(input) {
-    // Encode the input string as a Uint8Array
-    const encoder = new TextEncoder();
-    const data = encoder.encode(input);
-
-    // Use the SubtleCrypto API to hash the data
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-
-    // Convert the hash to a hex string
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-}
-
 
 
 let formTemplate= {
     title: `<label style="justify-content: center"><h2>UMFRAGENTITEL</h2></label>`,
-    numerical: `<div class="answer-umbrella">
+    "num": `<div class="answer-umbrella">
                     <label><div style="font-weight: bold">QUESTION-TEXT</div>
                         <input name="QUESTION-TEXT" class="answers" type="number" placeholder="ANSWER-TEXT">
                     </label>
                 </div>`,
-    textual: `<div class="answer-umbrella">
+    "text": `<div class="answer-umbrella">
                 <label style="justify-content: center; font-weight: bold">QUESTION-TEXT</label>
                 <label style="justify-content: center"><input name="QUESTION-TEXT" style="width: 75%" type="text" placeholder="ANSWER-TEXT"></label>
               </div>`,
-    checkmark: `<div class="answer-umbrella">
+    "checkbox": `<div class="answer-umbrella">
                     <label><div style="font-weight: bold">QUESTION-TEXT</div>
                         <input name="QUESTION-TEXT" class="answers" type="checkbox" placeholder="ANSWER-TEXT">
                     </label>
                 </div>`,
-    multipleChoice_Q: `<fieldset>
+    "multiple-choice": `<fieldset>
                          <legend style="font-weight: bold">QUESTION-TEXT</legend>
                        </fieldset>`,
-    multipleChoice_A: `<label>
+    "mc-answer": `<label>
                             ANSWER-TEXT
                             <input style="width: 5%; min-width: 10px" type="radio" name="html" value="ANSWER-TEXT">
                         </label><br>`
