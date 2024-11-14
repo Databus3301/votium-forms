@@ -25,7 +25,10 @@ document.addEventListener('DOMContentLoaded', async function () {
             alert("Formular nicht gefunden!\n\n Error: " + data.status);
             window.location.href = "/";
         }
+        console.log(data);
         // TODO: Display the form
+        // code all the form types once in the answer.html file
+        // then template them according to <data>
     })
     // Handle errors
     .catch((error) => {
@@ -50,3 +53,29 @@ async function hashString(input) {
     return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
 }
 
+
+
+let formTemplate= {
+    title: `<label style="justify-content: center"><h2>UMFRAGENTITEL</h2></label>`,
+    numerical: `<div class="answer-umbrella">
+                    <label><div style="font-weight: bold">QUESTION-TEXT</div>
+                        <input name="QUESTION-TEXT" class="answers" type="number" placeholder="ANSWER-TEXT">
+                    </label>
+                </div>`,
+    textual: `<div class="answer-umbrella">
+                <label style="justify-content: center; font-weight: bold">QUESTION-TEXT</label>
+                <label style="justify-content: center"><input name="QUESTION-TEXT" style="width: 75%" type="text" placeholder="ANSWER-TEXT"></label>
+              </div>`,
+    checkmark: `<div class="answer-umbrella">
+                    <label><div style="font-weight: bold">QUESTION-TEXT</div>
+                        <input name="QUESTION-TEXT" class="answers" type="checkbox" placeholder="ANSWER-TEXT">
+                    </label>
+                </div>`,
+    multipleChoice_Q: `<fieldset>
+                         <legend style="font-weight: bold">QUESTION-TEXT</legend>
+                       </fieldset>`,
+    multipleChoice_A: `<label>
+                            ANSWER-TEXT
+                            <input style="width: 5%; min-width: 10px" type="radio" name="html" value="ANSWER-TEXT">
+                        </label><br>`
+}

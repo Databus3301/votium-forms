@@ -11,19 +11,43 @@
         <h1 id="title">VOTIUM</h1>
 
         <form action="thanks.html" method="POST">
-            <label>Example
-                <input name="1" class="answers" type="number">
-            </label>
-            <br>
-            <label>
-                Label
-                <input name="2" class="answers" type="text" placeholder="antwort hier" required>
-            </label>
-            <br>
+            <label style="justify-content: center"><h2>UMFRAGENTITEL</h2></label>
+
+            <div class="answer-umbrella">
+                <label>Numerical
+                    <input name="PLACEHOLDER_FOR_QUESTION" class="answers" type="number" placeholder="ANSWER_TEXT">
+                </label>
+            </div>
+
+            <div class="answer-umbrella">
+                <label style="justify-content: center">Textual - Wie steht es um deine Liebe zu Votium? keine Liebe, viel Liebe oder Hass?</label>
+                <label style="justify-content: center"><input name="placeholder_for_question" style="width: 75%" type="text" placeholder="answer_text"></label>
+            </div>
+
+            <div class="answer-umbrella">
+                <label>Checkbox
+                    <input name="PLACEHOLDER_FOR_QUESTION" class="answers" type="checkbox" placeholder="ANSWER_TEXT">
+                </label>
+            </div>
+
+            <fieldset>
+                <legend style="font-weight: bold">What does HTML stand for? </legend>
+                <label>
+                    Hyper Text Markup Language
+                    <input style="width: 5%; min-width: 10px" type="radio" name="html" value="LABEL-TEXT">
+                </label><br>
+                <label>
+                    High-Level Text Management Language
+                    <input style="width: 5%; min-width: 10px" type="radio" name="html" value="LABEL-TEXT">
+                </label><br>
+            </fieldset>
+
+
+
             <button id="submit" type="submit">Absenden</button>
         </form>
     </body>
 
-    <script src="../js/form.js"></script>
     <script src="../js/answer.js"></script>
+
 </html>

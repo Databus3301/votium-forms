@@ -124,6 +124,7 @@ function handlePostData(req, res, data) {
     } else
     if (req.url === '/create-form') {
         // TODO: overwrite checks and user feedback if they wish to overwrite duplicate form
+        // because currently it just auto-overwrites
 
         let params = new URLSearchParams(data);
         if(!params.has("title"))
@@ -176,6 +177,8 @@ function handlePostData(req, res, data) {
         function error(msg) {
             file.write("]\n}\n]\n}\n");
             file.end();
+            if(fs.existsSync(path))
+                fs.rmSync(path);
             res.writeHead(500, {'Content-Type': 'text/json'});
             res.end(`{"status": "${msg}"}`);
         }
