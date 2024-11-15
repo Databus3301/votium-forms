@@ -3,18 +3,17 @@ let formJson;
 document.getElementsByTagName("form")[0].addEventListener("submit", async function (event) {
     event.preventDefault();
 
+    // TODO: reuse the formJson but replace the answer-options with the user's answers
+
     let formData = new FormData(this);
     formJson.questions.forEach(q => {
         let res = formData.get(q.text);
-        if(res == null || res === "")
-            // NICHT BEANTWORTET
-            console.log(q.text + ": --------------" );
-        else
-            // BEANTWORTET
-            console.log(q.text + ": " + formData.get(q.text));
+        // handle empty/non-submitted answers
+        if(!res) res="";
+        q.answers = [res];
     })
-
-   //window.location.href = "/html/thanks.html";
+    console.log(formJson);
+    // window.location.href = "/html/thanks.html";
 });
 
 
@@ -41,11 +40,14 @@ document.addEventListener('DOMContentLoaded', async function () {
     .then(response => response.json())
     // Handle the parsed response
     .then(data => {
+        // If the form was not found, alert the user and redirect to the home page
         if(data.status !== "success") {
             alert("Formular nicht gefunden!\n\n Error: " + data.status);
             window.location.href = "/";
         }
+        // save the JSON for reuse in evaluation
         formJson = data;
+        // Fill the form element with the data according to <formJSON>
         let form = document.getElementsByTagName("form")[0];
         let titleE = Utilities.parseStringToHTML(formTemplate.title.replace("UMFRAGENTITEL", data.title));
         form.insertBefore(titleE, form.firstChild);
