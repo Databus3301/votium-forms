@@ -171,8 +171,14 @@ function handlePostData(req, res, data) {
                 }
             }
         }
+        if(!(wrote.answers && wrote.type))
+            return error("bad_request_format\nincomplete_question");
+
         file.write("]\n}\n]\n}\n");
         file.end();
+
+        req.url = '/';
+        return servePage(res, req);
 
         function error(msg) {
             file.write("]\n}\n]\n}\n");

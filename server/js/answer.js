@@ -1,3 +1,23 @@
+let formJson;
+
+document.getElementsByTagName("form")[0].addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    let formData = new FormData(this);
+    formJson.questions.forEach(q => {
+        let res = formData.get(q.text);
+        if(res == null || res === "")
+            // NICHT BEANTWORTET
+            console.log(q.text + ": --------------" );
+        else
+            // BEANTWORTET
+            console.log(q.text + ": " + formData.get(q.text));
+    })
+
+   //window.location.href = "/html/thanks.html";
+});
+
+
 
 document.addEventListener('DOMContentLoaded', async function () {
     const params = new URLSearchParams(window.location.search);
@@ -25,19 +45,16 @@ document.addEventListener('DOMContentLoaded', async function () {
             alert("Formular nicht gefunden!\n\n Error: " + data.status);
             window.location.href = "/";
         }
-        console.log(data);
-        // TODO: Display the form
-        // by templating <formTemplate> according to <data>
+        formJson = data;
         let form = document.getElementsByTagName("form")[0];
         let titleE = Utilities.parseStringToHTML(formTemplate.title.replace("UMFRAGENTITEL", data.title));
         form.insertBefore(titleE, form.firstChild);
         data.questions.forEach(question => {
-            let questionE = Utilities.parseStringToHTML(formTemplate[question.type].replace("QUESTION-TEXT", question.text));
+            let questionE = Utilities.parseStringToHTML(formTemplate[question.type].replaceAll("QUESTION-TEXT", question.text).replace("ANSWER-TEXT", question.answers[0]));
             if(question.type === "multiple-choice") {
                 question.answers.forEach(answer => {
-                    let answerE = Utilities.parseStringToHTML(formTemplate["mc-answer"].replace("ANSWER-TEXT", answer));
+                    let answerE = Utilities.parseStringToHTML(formTemplate["mc-answer"].replaceAll("ANSWER-TEXT", answer).replace("QUESTION-TEXT", question.text));
                     questionE.insertBefore(answerE, questionE.lastChild);
-
                 });
             }
             form.insertBefore(questionE, form.lastChild.previousElementSibling);
@@ -69,14 +86,18 @@ let formTemplate= {
               </div>`,
     "checkbox": `<div class="answer-umbrella">
                     <label><div style="font-weight: bold">QUESTION-TEXT</div>
-                        <input name="QUESTION-TEXT" class="answers" type="checkbox" placeholder="ANSWER-TEXT">
+                        <input name="QUESTION-TEXT" class="answers" type="checkbox" value="checked">
                     </label>
                 </div>`,
     "multiple-choice": `<fieldset>
                          <legend style="font-weight: bold">QUESTION-TEXT</legend>
+                         <label style="display: none">
+                            DEFAULT
+                            <input style="width: 5%; min-width: 10px" type="radio" name="QUESTION-TEXT" value="" checked="checked">
+                        </label>
                        </fieldset>`,
     "mc-answer": `<label>
                             ANSWER-TEXT
-                            <input style="width: 5%; min-width: 10px" type="radio" name="html" value="ANSWER-TEXT">
+                            <input style="width: 5%; min-width: 10px" type="radio" name="QUESTION-TEXT" value="ANSWER-TEXT">
                         </label><br>`
 }
