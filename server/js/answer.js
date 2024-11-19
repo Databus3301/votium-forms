@@ -3,8 +3,6 @@ let formJson;
 document.getElementsByTagName("form")[0].addEventListener("submit", async function (event) {
     event.preventDefault();
 
-    // TODO: reuse the formJson but replace the answer-options with the user's answers
-
     let formData = new FormData(this);
     formJson.questions.forEach(q => {
         let res = formData.get(q.text);
@@ -12,7 +10,10 @@ document.getElementsByTagName("form")[0].addEventListener("submit", async functi
         if(!res) res="";
         q.answers = [res];
     })
-    console.log(formJson);
+    fetch('https://votium.social/submit-form', {
+        method: 'POST',
+        body: JSON.stringify(formJson)
+    })
     // window.location.href = "/html/thanks.html";
 });
 

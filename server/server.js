@@ -188,12 +188,41 @@ function handlePostData(req, res, data) {
             res.writeHead(500, {'Content-Type': 'text/json'});
             res.end(`{"status": "${msg}"}`);
         }
+    } else
+    if (req.url === '/submit-form') {
+        data = JSON.parse(data);
+
+        if(!data.id)
+            return res.end('{"status": "bad_request_format"}');
+        let path = `../umfragen-ergebnisse/`;
+        if(!fs.existsSync(path)) {
+            fs.mkdirSync(path);
+        }
+        path += `${data.id}.json`;
+        if(!fs.existsSync(path)) {
+            fs.writeFileSync(path, JSON.stringify(data, null, 2), 'utf8');
+            return res.end('{"status": "success"}');
+        }
+        // If there is already a file for the form, append the data
+        let file = fs.readFileSync(path, 'utf8');
+        let fileData = JSON.parse(file);
+        // loop through both the data and the fileData to append the answers to the questions
+        for(let i = 0; i < data.questions.length; i++) {
+            let question = data.questions[i];
+            let fileQuestion = fileData.questions[i];
+            if(question.id !== fileQuestion.id)
+                return res.end('{"status": "bad_request_format"}');
+            for(let j = 0; j < question.answers.length; j++) {
+                fileQuestion.answers.push(question.answers[j]);
+            }
+        }
+        fs.writeFileSync(path, JSON.stringify(fileData, null, 2), 'utf8');
+        return res.end('{"status": "success"}');
     }
+
     // default case
     res.writeHead(200, {'Content-Type': 'text/json'});
     res.end('{"status": "?_?"}');
-
-    //TODO: Handle the POST data to "/create-form" and save the form data
 }
 
 function logPOST(reqBody)  {
