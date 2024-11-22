@@ -21,9 +21,10 @@ document.getElementsByTagName('form')[0].addEventListener('submit', async functi
             document.getElementById('results').innerHTML = 'No results found for this survey.';
         } else {
             // TODO: visualize the data
-            // one chart per question
-            // think of sensible chart types for each answer type
+            // one chart per question (bar for checkbox, pie for multiple choice, line for number (maybe bar for num))
+            // think of a sensible presentation of te text answers
             // make sure this is scrollable
+
         }
     });
 
