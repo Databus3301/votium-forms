@@ -224,11 +224,20 @@ function handlePostData(req, res, data) {
         data = JSON.parse(data);
         if(!data.pass || !data.id)
             return res.end('{"status": "bad_request_format"}');
+        // load the potential form results
         let path = `../umfragen-ergebnisse/${data.id}.json`;
-        if(fs.existsSync(path))
-            return sendFile(res, path);
-        else
+        if(fs.existsSync(path)) {
+            let file = fs.readFileSync(path, 'utf8');
+            let fileData = JSON.parse(file);
+            // check if the password is correct
+            if(fileData.pass === data.pass)
+                return sendFile(res, path);
+            else
+                return res.end('{"status": "incorrect_password"}');
+        }
+        else {
             return res.end('{"status": "not_found"}');
+        }
     }
 
     // default case
