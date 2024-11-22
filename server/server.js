@@ -117,8 +117,13 @@ function handlePostData(req, res, data) {
             return res.end('{"status": "bad_request_format"}');
         // Test if the form exists
         let path = `../umfragen/${data.hash}.json`;
-        if(fs.existsSync(path))
-            return sendFile(res, path);
+        if(fs.existsSync(path)) {
+            let file = fs.readFileSync(path, 'utf8');
+            let content = JSON.parse(file);
+            content.pass = "PASSWORT_PROTECTED";
+            res.writeHead(200, {'Content-Type': 'application/json'});
+            return res.end(JSON.stringify(content));
+        }
         else
             return res.end('{"status": "not_found"}');
     } else
@@ -127,7 +132,7 @@ function handlePostData(req, res, data) {
         // because currently it just auto-overwrites
 
         let params = new URLSearchParams(data);
-        if(!params.has("title"))
+        if(!params.has("title") || !params.has("pass"))
             return res.end('{"status": "bad_request_format"}');
         let hash = sha256Hash(params.get("title"));
         let path = `../umfragen/${hash}.json`;
@@ -178,6 +183,8 @@ function handlePostData(req, res, data) {
         file.write("]\n}\n]\n}\n");
         file.end();
 
+
+
         req.url = '/';
         return servePage(res, req);
 
@@ -192,15 +199,20 @@ function handlePostData(req, res, data) {
     } else
     if (req.url === '/submit-form') {
         data = JSON.parse(data);
-
+        // Test if the POST data is in the correct format
         if(!data.id)
             return res.end('{"status": "bad_request_format"}');
         let path = `../umfragen-ergebnisse/`;
+        // ensure dir exists
         if(!fs.existsSync(path)) {
             fs.mkdirSync(path);
         }
+        // ensure file and form exist
         path += `${data.id}.json`;
-        if(!fs.existsSync(path)) {
+        if(!fs.existsSync(path) && fs.existsSync(`../umfragen/${data.id}.json`)) {
+            // set passwd to it's true value
+            data.pass = JSON.parse(fs.readFileSync(`../umfragen/${data.id}.json`, 'utf8')).pass;
+            // write <data> to the file
             fs.writeFileSync(path, JSON.stringify(data, null, 2), 'utf8');
             return res.end('{"status": "success"}');
         }
@@ -230,8 +242,11 @@ function handlePostData(req, res, data) {
             let file = fs.readFileSync(path, 'utf8');
             let fileData = JSON.parse(file);
             // check if the password is correct
-            if(fileData.pass === data.pass)
-                return sendFile(res, path);
+            if(fileData.pass === data.pass) {
+                fileData.pass = "PASSWORT_PROTECTED";
+                res.writeHead(200, {'Content-Type': 'application/json'});
+                return res.end(JSON.stringify(fileData));
+            }
             else
                 return res.end('{"status": "incorrect_password"}');
         }
