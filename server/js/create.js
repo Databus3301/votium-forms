@@ -1,3 +1,17 @@
+// overwrite form submission
+document.getElementsByTagName('form')[0].addEventListener('submit', async function(event) {
+    event.preventDefault();
+    let data = new FormData(event.target);
+    data.set('pass', await Utilities.hashString(data.get('pass')));
+    data = new URLSearchParams(data).toString();
+
+    await fetch('/create-form', {
+        method: 'POST',
+        body: data
+    })
+});
+
+
 
 
 let insertionPoint;
@@ -37,7 +51,7 @@ let questionPrefab = `
 
 document.addEventListener('DOMContentLoaded', () => {
     // get a ref to the initial label (Title) to use as an insertion point
-    insertionPoint = document.getElementsByTagName('label')[0];
+    insertionPoint = document.getElementsByTagName('label')[1];
 });
 
 function addQuestion() {

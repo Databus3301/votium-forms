@@ -18,6 +18,11 @@ input {
     font: 700 2.5em Arial;
     text-align: center;
     padding-left: 10px;
+    cursor: pointer;
+    transition: color 0.5s ease;
+}
+#title:hover {
+    color: #41454d;
 }
 
 

@@ -23,10 +23,10 @@
 </head>
 <body>
 
-<h1 id="title" onclick="redirect('manage.html')">VOTIUM</h1>
+<h1 id="title" onclick="Utilities.redirect('manage.html')">VOTIUM</h1>
 
 <form method="GET" action="https://votium.social/html/answer.html" id="landingForm">
-    <label>Umfragen-Code:
+    <label>Umfragen-Name:
         <input name="code" class="answers" type="text" required>
     </label>
     <button class="submit">Teilnehmen</button>
@@ -39,17 +39,6 @@
 
 </body>
 
-<script src="../js/landing.js"></script>
-
-<!--! Exclusive title page Form-Creation-Link prettify: -->
-<style>
-    #title {
-        cursor: pointer;
-        transition: color 0.5s ease;
-    }
-    #title:hover {
-        color: #41454d;
-    }
-</style>
+<script src="../js/utility.js"></script>
 
 </html>

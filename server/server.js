@@ -136,6 +136,7 @@ function handlePostData(req, res, data) {
         file.write("{\n");
         file.write(`"status": "success",\n`);
         file.write(`"title": "${params.get("title")}",\n`);
+        file.write(`"pass": "${params.get("pass")}",\n`);
         file.write(`"id": "${hash}",\n`);
         file.write(`"questions": [\n`);
 

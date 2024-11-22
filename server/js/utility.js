@@ -21,3 +21,9 @@ Utilities.hashString = async function(input) {
     return hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
 };
 
+
+Utilities.redirect = function(page){
+    window.location.href='https://votium.social/html/' + page;
+}
+
+

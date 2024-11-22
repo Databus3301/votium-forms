@@ -8,14 +8,14 @@
 </head>
 <body>
 
-<h1 id="title">VOTIUM</h1>
-<form method="GET" action="/">
-    <button class="submit" onclick="redirect('create.html')">Umfrage erstellen</button>
-    <button class="submit" onclick="redirect('results.html')">Umfrageergebnisse einsehen</button>
+<h1 id="title" onclick="Utilities.redirect('index.html')">VOTIUM</h1>
+<form>
+    <button class="submit" onclick="Utilities.redirect('create.html')">Umfrage erstellen</button>
+    <button class="submit" onclick="Utilities.redirect('results.html')">Umfrageergebnisse einsehen</button>
 </form>
 
 </body>
 
 <script src="../js/manage.js"></script>
-<script src="../js/landing.js"></script>
+<script src="../js/utility.js"></script>
 </html>

@@ -8,10 +8,13 @@
 </head>
 <body>
 
-<h1 id="title">VOTIUM</h1>
-<form method="POST" action="/create-form">
-    <label>Titel:
+<h1 id="title" onclick="Utilities.redirect('index.html')">VOTIUM</h1>
+<form>
+    <label>Name:
         <input name="title" class="answers" type="text" required>
+    </label>
+    <label>Passwort:
+        <input name="pass" class="answers" type="text" required>
     </label>
     <label>
         <button id="add-question" type="button" onclick="addQuestion()">+</button>
