@@ -20,7 +20,10 @@ document.getElementsByTagName('form')[0].addEventListener('submit', async functi
         if(data.status === 'not_found') {
             document.getElementById('results').innerHTML = 'No results found for this survey.';
         } else {
-
+            // TODO: visualize the data
+            // one chart per question
+            // think of sensible chart types for each answer type
+            // make sure this is scrollable
         }
     });
 

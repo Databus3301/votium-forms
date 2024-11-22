@@ -3,6 +3,7 @@ document.getElementsByTagName('form')[0].addEventListener('submit', async functi
     event.preventDefault();
     let data = new FormData(event.target);
     data.set('pass', await Utilities.hashString(data.get('pass')));
+    data.set('title', data.get('title').trim());
     data = new URLSearchParams(data).toString();
 
     await fetch('/create-form', {
