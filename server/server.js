@@ -120,7 +120,7 @@ function handlePostData(req, res, data) {
         if(fs.existsSync(path)) {
             let file = fs.readFileSync(path, 'utf8');
             let content = JSON.parse(file);
-            content.pass = "PASSWORT_PROTECTED";
+            content.pass = "PASSWORD_PROTECTED";
             res.writeHead(200, {'Content-Type': 'application/json'});
             return res.end(JSON.stringify(content));
         }
@@ -243,7 +243,7 @@ function handlePostData(req, res, data) {
             let fileData = JSON.parse(file);
             // check if the password is correct
             if(fileData.pass === data.pass) {
-                fileData.pass = "PASSWORT_PROTECTED";
+                fileData.pass = "PASSWORD_PROTECTED";
                 res.writeHead(200, {'Content-Type': 'application/json'});
                 return res.end(JSON.stringify(fileData));
             }
