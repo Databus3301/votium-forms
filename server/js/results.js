@@ -5,7 +5,25 @@ document.getElementsByTagName('form')[0].addEventListener('submit', async functi
     event.preventDefault();
     let data = new FormData(event.target);
     data.set('pass', await Utilities.hashString(data.get('pass')));
-    console.log(data);
+    data.set('id', await Utilities.hashString(data.get('name')));
+    data.delete('name');
+
+    // data to json
+    data = JSON.stringify(Object.fromEntries(data.entries()));
+
+    fetch('/get-results', {
+        method: 'POST',
+        body: data
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.status === 'not_found') {
+            document.getElementById('results').innerHTML = 'No results found for this survey.';
+        } else {
+
+        }
+    });
+
 })
 
 // example table

@@ -219,6 +219,16 @@ function handlePostData(req, res, data) {
         }
         fs.writeFileSync(path, JSON.stringify(fileData, null, 2), 'utf8');
         return res.end('{"status": "success"}');
+    } else
+    if(req.url === '/get-results') {
+        data = JSON.parse(data);
+        if(!data.pass || !data.id)
+            return res.end('{"status": "bad_request_format"}');
+        let path = `../umfragen-ergebnisse/${data.id}.json`;
+        if(fs.existsSync(path))
+            return sendFile(res, path);
+        else
+            return res.end('{"status": "not_found"}');
     }
 
     // default case
