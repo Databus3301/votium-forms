@@ -13,8 +13,9 @@ document.getElementsByTagName("form")[0].addEventListener("submit", async functi
     fetch('https://votium.social/submit-form', {
         method: 'POST',
         body: JSON.stringify(formJson)
-    })
-    // window.location.href = "/html/thanks.html";
+    }).then(() => {
+        window.location.href = "/html/thanks.html";
+    });
 });
 
 

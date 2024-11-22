@@ -1,5 +1,5 @@
 
-function redirect(){
-    window.location.href='https://votium.social/html/create.html';
+function redirect(page){
+    window.location.href='https://votium.social/html/' + page;
 }
 

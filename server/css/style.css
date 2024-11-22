@@ -21,7 +21,7 @@ input {
 }
 
 
-#submit {
+.submit {
     background-color: #E1E8F0;
     color: black;
     font-size: 1em;
@@ -41,7 +41,7 @@ input {
     transition: background-color 0.3s ease;
 }
 
-#submit:hover {
+.submit:hover {
     background-color: #D0D7E0;
 }
 

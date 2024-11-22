@@ -23,13 +23,13 @@
 </head>
 <body>
 
-<h1 id="title" onclick="redirect()">VOTIUM</h1>
+<h1 id="title" onclick="redirect('manage.html')">VOTIUM</h1>
 
 <form method="GET" action="https://votium.social/html/answer.html" id="landingForm">
     <label>Umfragen-Code:
         <input name="code" class="answers" type="text" required>
     </label>
-    <button id="submit">Teilnehmen</button>
+    <button class="submit">Teilnehmen</button>
 </form>
 
 <p id="antworten"></p>
