@@ -100,7 +100,7 @@ label {
 
 .answer-umbrella {
     border: 1px solid lightgray;
-    box-shadow: gray 0px 0px 10px;
+    box-shadow: gray 0 0 10px;
     margin: 10px 0;
     padding: 0 10px;
 }
@@ -108,8 +108,8 @@ label {
 
 .graph-container {
     max-width: max(100vh, 50%);
-    margin: 0 auto;
     border: 1px solid black;
+    margin: 0 auto 10px;
     border-radius: 10px;
 
     background: whitesmoke;
@@ -123,4 +123,11 @@ label {
 .graph-question {
     text-align: center;
     display: block;
+}
+
+.type-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin: 10px 0 10px 5%;
+    width: 90%;
 }
