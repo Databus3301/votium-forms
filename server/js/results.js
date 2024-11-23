@@ -1,6 +1,6 @@
+const chart_template = `<canvas id="INDEX"></canvas>`
+
 // prevent default form submission
-
-
 document.getElementsByTagName('form')[0].addEventListener('submit', async function(event) {
     event.preventDefault();
     let data = new FormData(event.target);
@@ -18,12 +18,25 @@ document.getElementsByTagName('form')[0].addEventListener('submit', async functi
     .then(response => response.json())
     .then(data => {
         if(data.status === 'not_found') {
-            document.getElementById('results').innerHTML = 'No results found for this survey.';
+            // TODO: better error handling
+            alert('No results found for this survey.');
         } else {
             // TODO: visualize the data
             // one chart per question (bar for checkbox, pie for multiple choice, line for number (maybe bar for num))
             // think of a sensible presentation of te text answers
             // make sure this is scrollable
+
+
+            let questions = data.questions;
+            questions.forEach(q => {
+                // salt the questions for unique chart IDs
+                q.salt = Math.random().toString(36).substring(7)
+                // generate the chart
+            })
+
+
+
+
 
         }
     });
@@ -31,14 +44,14 @@ document.getElementsByTagName('form')[0].addEventListener('submit', async functi
 })
 
 // example table
-/*
+//*
 document.addEventListener('DOMContentLoaded', function() {
     // Get the context of the canvas element we want to select
-    var ctx = document.getElementById('myChart').getContext('2d');
+    let ctx = document.getElementById('myChart').getContext('2d');
 
     // Create a new Chart instance
     var myChart = new Chart(ctx, {
-        type: 'radar', // Specify the type of chart
+        type: 'bar', // Specify the type of chart
         data: {
             labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
             datasets: [{
