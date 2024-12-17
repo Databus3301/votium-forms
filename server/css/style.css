@@ -131,3 +131,11 @@ label {
     margin: 10px 0 10px 5%;
     width: 90%;
 }
+
+textarea {
+    width: 98%;
+    margin: 10px 0;
+    text-align: center;
+    border-radius: 5px;
+    border: 1px solid black;
+}

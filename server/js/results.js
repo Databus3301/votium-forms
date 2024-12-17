@@ -13,8 +13,18 @@ const chart_template = `
                                     </div>
                                 </div>
                               `
+const text_template = `
+                              <div class="graph-container">
+                                  <h2 class="graph-question">QUESTION_TEXT</h2>
+                                  <div class="graph-umbrella">
+                                      <textarea rows="15" readonly="true">
+TEXT
+                                      </textarea>
+                                  </div>
+                              </div>
+                              `
 
-let charts = {};
+let charts = {example: {object: 'object'}};
 
 // prevent default form submission
 document.getElementsByTagName('form')[0].addEventListener('submit', async function(event) {
@@ -37,47 +47,70 @@ document.getElementsByTagName('form')[0].addEventListener('submit', async functi
             // TODO: better error handling
             alert('No results found for this survey.');
         } else {
-            // TODO: visualize the data
-            // think of a sensible presentation of te text answers
-            // fix radar chart bg not updating back to grid on deselect
-            // fix only the most recent chart rendering
+            // remove any currently displayed results
+            document.getElementById('results').innerHTML = "";
+
+            // TODO: fix radar chart bg not updating back to grid on deselect
 
             let questions = data.questions;
             questions.forEach(q => {
-                // salt the questions for unique chart IDs
-                q.salt = Math.random().toString(36).substring(7)
-                // generate the chart
-                let chart = chart_template.replace('QUESTION_TEXT', q.text).replace('GRAPH_ID', q.text+"_"+q.salt);
-                document.getElementById('results').innerHTML += chart;
-                // get the context of the canvas element we want to select
-                let ctx = document.getElementById(q.text+"_"+q.salt).getContext('2d');
-                // create a new Chart instance
-                let type = chooseType(q);
-                // format the answers
-                q.answers = formatAnswers(q);
-                if(!type) return;
-                // save the chart instance to the charts object
-                charts[q.text+"_"+q.salt] =
-                new Chart(ctx, {
-                        type: type, // type derived from question type
-                        data: {
-                            labels: q.answers.map(a => a.text),
-                            datasets: [{
-                                label: 'Zahl an Stimmen',
-                                data: q.answers.map(a => a.count),
-                                backgroundColor: backgroundColors,
-                                borderColor: borderColors,
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: true
+
+                if (!q.type) return;
+
+                // if the type is suitable for table gen, gen a table
+                if(q.type !== 'text') {
+                    // format the answers
+                    q.answers = formatAnswers(q);
+                    // salt the questions for unique chart IDs
+                    q.salt = Math.random().toString(36).substring(7)
+
+                    // generate the chart
+                    let chart = chart_template.replace('QUESTION_TEXT', q.text).replace('GRAPH_ID', q.text + "_" + q.salt);
+                    document.getElementById('results').insertAdjacentHTML('beforeend', chart);
+                    // get the context of the canvas element we want to select
+                    let ctx = document.getElementById(q.text + "_" + q.salt).getContext('2d');
+
+                    // save the chart instance to the charts object
+                    charts[q.text + "_" + q.salt] =
+                        new Chart(ctx, {
+                            type: 'bar', // type derived from question type
+                            data: {
+                                labels: q.answers.map(a => a.text),
+                                datasets: [{
+                                    label: 'Stimmen',
+                                    data: q.answers.map(a => parseInt(a.count)),
+                                    backgroundColor: backgroundColors,
+                                    borderColor: borderColors,
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
                                 }
                             }
-                        }
-                });
+                        });
+
+                    // determine type, after "bar" default set correct sizing
+                    let type = chooseType(q);
+                    updateChartType(q.text + "_" + q.salt, type)
+                }
+                else
+                // since text isn't able to be displayed as a chart, we'll just display it as a list
+                if(q.type === 'text') {
+                    let text = text_template.replace('QUESTION_TEXT', q.text);
+
+
+                    let lines = "";
+                    q.answers.forEach(a => {
+                        lines += "» \"" + a + "\"\n"
+                    });
+                    text = text.replace('TEXT', lines);
+                    document.getElementById('results').insertAdjacentHTML('beforeend', text);
+
+                }
             })
         }
 
@@ -85,39 +118,12 @@ document.getElementsByTagName('form')[0].addEventListener('submit', async functi
 
 })
 
-// example table
-//*
-
-document.addEventListener('DOMContentLoaded', function() {
-    // Get the context of the canvas element we want to select
-    let ctx = document.getElementById('myChart').getContext('2d');
-
-    // Create a new Chart instance
-    charts["myChart"] = new Chart(ctx, {
-        type: 'bar', // Specify the type of chart
-        data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-            datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
-                backgroundColor: backgroundColors,
-                borderColor: borderColors,
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-});
-//*/
 
 function updateChart(button, type) {
     let id = button.parentNode.previousElementSibling.firstElementChild.id
+    updateChartType(id, type);
+}
+function updateChartType(id, type) {
     charts[id].config.type = type;
     charts[id].update();
 }
@@ -125,9 +131,9 @@ function updateChart(button, type) {
 function chooseType(q) {
     if(q.type === 'checkbox') {
         return 'bar';
-    } else if(q.type === 'multiple_choice') {
-        return 'pie';
-    } else if(q.type === 'number') {
+    } else if(q.type === 'multiple-choice') { // select rndmly between pie and doughnut
+        return ['pie', 'doughnut'][Math.round(Math.random())]
+    } else if(q.type === 'num') {
         return 'line';
     } else {
         return 'bar';
@@ -149,7 +155,21 @@ function formatAnswers(q) {
         return formatted;
     }
     if(q.type === 'checkbox') {
-        return q.answers.map(a => a === "" ? "unchecked" : "checked");
+        let formatted = [{text: "checked", count: 0},{text: "unchecked", count: 0}];
+        q.answers.forEach(a => a === "" ?
+            formatted[1].count++ :
+            formatted[0].count++
+        );
+        return formatted;
+    }
+    if(q.type === 'num') {
+        let formatted = [];
+        q.answers = q.answers.map(a => a === "" ? 0 : parseInt(a));
+        q.answers.sort((a, b) => a - b);
+        q.answers.forEach(a => {
+            formatted.push({text: a+"", count: a})
+        });
+        return formatted;
     }
 }
 
@@ -187,3 +207,7 @@ const borderColors = [
     'rgba(255, 140, 0, 1)',      // Dark Orange
     'rgba(46, 139, 87, 1)'       // Sea Green
 ];
+
+
+
+
