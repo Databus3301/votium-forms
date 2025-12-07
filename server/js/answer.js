@@ -10,7 +10,7 @@ document.getElementsByTagName("form")[0].addEventListener("submit", async functi
         if(!res) res="";
         q.answers = [res];
     })
-    fetch('https://votium.social/submit-form', {
+    fetch(domain + '/submit-form', {
         method: 'POST',
         body: JSON.stringify(formJson)
     }).then(() => {
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     console.log("Sha256: " + hash);
 
     // Query for a form corresponding to the hash
-    fetch('https://votium.social/get-form', {
+    fetch(domain + '/get-form', {
         method: 'POST',
         body: JSON.stringify({hash: hash})
     })

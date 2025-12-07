@@ -8,6 +8,7 @@ const indexPath = path.join(__dirname, './html/index.html');
 
 // Define the server port
 const PORT = 8080;
+const domain = "https://romantic-dassie-nominally.ngrok-free.app"
 
 // Create the server
 const server = http.createServer({}, (req, res) => {
@@ -88,6 +89,7 @@ function sendFile(res, filePath) {
                 res.writeHead(500, {'Content-Type': 'text/plain'});
                 return res.end('Internal Server Error');
             }
+            data = data.toString().replaceAll("_DOMAIN_", domain);
             setContentType({url: filePath}, res);
             return res.end(data);
         })

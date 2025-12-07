@@ -22,8 +22,11 @@ Utilities.hashString = async function(input) {
 };
 
 
+const domain = "https://romantic-dassie-nominally.ngrok-free.app"
+
+
 Utilities.redirect = function(page){
-    window.location.href='https://votium.social/html/' + page;
+    window.location.href=domain + '/html/' + page;
 }
 
 

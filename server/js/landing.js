@@ -3,5 +3,6 @@ document.getElementsByTagName('form')[0].addEventListener('submit', function(eve
     event.preventDefault();
     let data = new FormData(event.target);
     let code = data.get('code').trim()
-    window.location.href = `https://votium.social/html/answer.html?code=${code}`;
+    Utilities.redirect('answer.html?code=' + code);
 });
+
